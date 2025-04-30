@@ -22,3 +22,26 @@ export const saveWeatherQuery = async (userId: string, weatherData: WeatherData)
         throw new Error("Failed to save weather query.");
     }
 }
+
+export const getUserWeatherQueries = async (userId: string) => {
+    return prisma.weatherQuery.findMany({
+        where: {userId},
+        orderBy: { createdAt: "desc" },
+    })
+}
+
+export const getAllWeatherQueries = async () => {
+    return prisma.weatherQuery.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  };

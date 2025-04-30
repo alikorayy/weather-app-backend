@@ -1,7 +1,7 @@
 import axios from "axios";
 import appConstants from "../../constants/appConstants";
 import { WeatherData, OpenWeatherResponse } from "../interfaces/weatherData.interface";
-import { saveWeatherQuery } from "../dao/weatherDao";
+import { saveWeatherQuery, getUserWeatherQueries, getAllWeatherQueries } from "../dao/weatherDao";
 import redisClient from "../../config/redisClient";
 
 const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY!;
@@ -19,6 +19,7 @@ export const searchWeatherService = async (city: string, userId: string) => {
             return weatherData;
         }
         console.log("No cached data found for city:", city);
+        console.log("Fetching new weather data from OpenWeather API...");
         const baseUrl = appConstants.OPENWEATHER_BASE_URL;
         const params = {
             q: city,
@@ -51,3 +52,11 @@ export const searchWeatherService = async (city: string, userId: string) => {
         throw new Error(appConstants.ERRORS.WEATHER_API_ERROR);
     }
 }
+
+export const getUserWeatherQueriesService = async (userId: string) => {
+    return await getUserWeatherQueries(userId);
+}
+
+export const getAllWeatherQueriesService = async () => {
+    return await getAllWeatherQueries();
+  };
