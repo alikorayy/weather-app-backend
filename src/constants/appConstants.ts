@@ -18,12 +18,18 @@ const ERRORS = {
   UNAUTHORIZED: "No valid token provided.",
   TOKEN_EXPIRED: "Token expired. Please login again.",
   LOGIN_FIRST: "Unauthorized. Please login first.",
-  ADMIN_ONLY: "Forbidden. Admins only."
+  ADMIN_ONLY: "Forbidden. Admins only.",
+  WEATHER_API_ERROR: "Failed to fetch weather data"
 };
+
+const OPENWEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 const appConstants = {
   RESPONSE_STATUS,
   ERRORS,
+  OPENWEATHER_BASE_URL,
 };
+
+
 
 export default appConstants;

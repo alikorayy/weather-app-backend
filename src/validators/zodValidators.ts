@@ -15,3 +15,7 @@ export const createUserSchema = z.object({
     password: z.string().min(6),
     role: z.enum(["USER", "ADMIN"]),
   });
+
+export const weatherSearchSchema = z.object({
+  city: z.string().min(1),
+})
