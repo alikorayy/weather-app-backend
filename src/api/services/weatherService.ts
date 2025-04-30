@@ -2,11 +2,23 @@ import axios from "axios";
 import appConstants from "../../constants/appConstants";
 import { WeatherData, OpenWeatherResponse } from "../interfaces/weatherData.interface";
 import { saveWeatherQuery } from "../dao/weatherDao";
+import redisClient from "../../config/redisClient";
 
 const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY!;
 
 export const searchWeatherService = async (city: string, userId: string) => {
     try {
+        const cacheKey = `weather:${city.toLowerCase()}`;
+        const cached = await redisClient.get(cacheKey);
+
+        if(cached) {
+            console.log("Existing weather data found in cache for city:", city);
+            console.log("Cached data:", cached);
+            const weatherData: WeatherData = JSON.parse(cached);
+            await saveWeatherQuery(userId, weatherData);
+            return weatherData;
+        }
+        console.log("No cached data found for city:", city);
         const baseUrl = appConstants.OPENWEATHER_BASE_URL;
         const params = {
             q: city,
@@ -29,6 +41,7 @@ export const searchWeatherService = async (city: string, userId: string) => {
             weatherDescription: data.weather[0].description,
             windSpeed: data.wind.speed,
         }
+        await redisClient.setEx(cacheKey, appConstants.CACHE_EXPIRATION_TIME, JSON.stringify(weatherData));
 
         await saveWeatherQuery(userId, weatherData)
         return weatherData;

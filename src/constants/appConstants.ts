@@ -1,4 +1,3 @@
-import { INVALID } from "zod";
 
 const RESPONSE_STATUS = {
   OK: 200,
@@ -23,11 +22,13 @@ const ERRORS = {
 };
 
 const OPENWEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+const CACHE_EXPIRATION_TIME = 900; // 15 minutes in seconds
 
 const appConstants = {
   RESPONSE_STATUS,
   ERRORS,
   OPENWEATHER_BASE_URL,
+  CACHE_EXPIRATION_TIME,
 };
 
 
