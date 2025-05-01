@@ -23,6 +23,7 @@ export const searchWeatherHandler: RequestHandler = async (req, res) => {
     const userId = req.user!.userId;
 
     const weatherData = await weatherService.searchWeatherService(city, userId);
+    console.log("Weather data:", JSON.stringify(weatherData, null, 2));
 
     responseHandler.FORMATTED_RESPONSE_HANDLER(
       res,
@@ -56,6 +57,7 @@ export const getUserWeatherQueriesHandler: RequestHandler = async (
     const weatherQueries = await weatherService.getUserWeatherQueriesService(
       userId
     );
+    console.log("Weather queries:", JSON.stringify(weatherQueries, null, 2));
     responseHandler.FORMATTED_RESPONSE_HANDLER(
       res,
       appConstants.RESPONSE_STATUS.OK,
@@ -80,6 +82,10 @@ export const getAllWeatherQueriesHandler: RequestHandler = async (
     const weatherQueries = await weatherService.getAllWeatherQueriesService();
     console.log("Weather queries:", JSON.stringify(weatherQueries, null, 2));
     const formattedWeatherQueries = utils.ResponseFormatter(weatherQueries);
+    console.log(
+      "Formatted weather queries:",
+      JSON.stringify(formattedWeatherQueries, null, 2)
+    );
     responseHandler.FORMATTED_RESPONSE_HANDLER(
       res,
       appConstants.RESPONSE_STATUS.OK,
